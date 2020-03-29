@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
           - name: webcron
-            image: byrnedo/alpine-curl:latest
+            image: dockerhub.azk8s.cn/byrnedo/alpine-curl:latest
             env:
             - name: HTTP_PORT
               valueFrom:

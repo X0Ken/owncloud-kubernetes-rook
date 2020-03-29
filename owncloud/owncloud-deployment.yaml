@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: owncloud-fs
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: rook-cephfs
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -38,15 +49,10 @@ spec:
                   - owncloud
       volumes:
       - name: owncloud-data
-        flexVolume:
-          driver: rook.io/rook
-          fsType: ceph
-          options:
-            fsName: myfs
-            clusterNamespace: rook-ceph
-            #path: "/"
+        persistentVolumeClaim:
+          claimName: owncloud-fs
       containers:
-      - image: galexrt/owncloud-server:latest
+      - image: dockerhub.azk8s.cn/owncloud/server
         imagePullPolicy: Always
         name: owncloud
         envFrom:
